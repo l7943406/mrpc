@@ -74,7 +74,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
         // 将data转换成object
         Object obj = ProtoStuffUtil.deserialize(data, clazz);
-
+        LOGGER.debug("压缩前消息大小 : " + data.length + " 压缩后大小" + zipData.length);
         LOGGER.debug("解码并解压消息成功,解码为对象 : " + obj);
         list.add(obj);
     }
