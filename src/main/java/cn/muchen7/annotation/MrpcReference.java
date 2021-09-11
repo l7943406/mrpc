@@ -11,13 +11,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 为该属性注入RPC服务对象
- *
  * @author muchen
  */
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface MrpcReference {
-
     /**
      * 负载均衡方式
      */
