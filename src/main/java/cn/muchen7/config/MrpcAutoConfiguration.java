@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnBean(annotation = EnableMrpc.class)
 @EnableConfigurationProperties(MrpcProperties.class)
-public class MrpcConfiguration {
+public class MrpcAutoConfiguration {
 
     private MrpcProperties properties;
 
