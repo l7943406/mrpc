@@ -87,7 +87,7 @@ public class MrpcServer implements ApplicationContextAware, InitializingBean {
     @Override
     public void afterPropertiesSet() {
         LOGGER.debug("扫描MrpcServer完成 启动netty服务");
-        MrpcServerListener.create(serviceIp, servicePort, handlers).start();
+        MrpcServerListener.create("0.0.0.0", servicePort, handlers).start();
     }
 
     /**
