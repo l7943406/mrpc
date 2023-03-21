@@ -15,7 +15,6 @@
         <netty-all.version>4.1.90.Final</netty-all.version>
         <protostuff.version>1.8.0</protostuff.version>
         <zookeeper.version>3.8.1</zookeeper.version>
-        <lombok.version>1.18.20</lombok.version>
         <spring-boot.version>3.0.4</spring-boot.version>
         <junit.version>4.13.2</junit.version>
     </properties>
@@ -44,7 +43,7 @@
             <version>${netty-all.version}</version>
         </dependency>
 
-        <!-- protostuff 序列化 -->
+        <!-- protostuff 序列化组件 -->
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-runtime</artifactId>
