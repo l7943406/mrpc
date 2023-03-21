@@ -6,17 +6,18 @@
 
     <groupId>cn.muchen7.mrpc</groupId>
     <artifactId>spring-boot-starter-mrpc</artifactId>
-    <version>1.0.18</version>
+    <version>1.0.19</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <netty-all.version>4.1.67.Final</netty-all.version>
-        <protostuff.version>1.7.4</protostuff.version>
-        <zookeeper.version>3.7.0</zookeeper.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <netty-all.version>4.1.90.Final</netty-all.version>
+        <protostuff.version>1.8.0</protostuff.version>
+        <zookeeper.version>3.8.1</zookeeper.version>
         <lombok.version>1.18.20</lombok.version>
-        <spring-boot.version>2.4.3</spring-boot.version>
+        <spring-boot.version>3.0.4</spring-boot.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
 
@@ -67,7 +68,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 

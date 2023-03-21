@@ -146,7 +146,7 @@ public class MrpcInjectHandler implements ApplicationContextAware {
     private String getServiceAddress(String interfaceName, Class<? extends LoadBalance> loadBalanceClass) {
         Set<String> servicesInfo = servicesMap.get(interfaceName);
         try {
-            String serviceInfo = loadBalanceClass.newInstance().select(new LinkedList<>(servicesInfo));
+            String serviceInfo = loadBalanceClass.getDeclaredConstructor().newInstance().select(new LinkedList<>(servicesInfo));
             return serviceInfo.substring(0, serviceInfo.indexOf("?"));
         } catch (Exception e) {
             e.printStackTrace();
