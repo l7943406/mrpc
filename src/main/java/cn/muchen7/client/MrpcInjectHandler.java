@@ -7,6 +7,10 @@ import cn.muchen7.message.MrpcResponse;
 import cn.muchen7.utils.HashMultiMap;
 import cn.muchen7.utils.MrpcException;
 import cn.muchen7.zk.ZkClient;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -18,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Proxy;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -30,6 +35,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class MrpcInjectHandler implements ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MrpcInjectHandler.class);
+    private final MeterRegistry registry;
 
     /**
      * zookeeper中注册服务器
@@ -46,9 +52,10 @@ public class MrpcInjectHandler implements ApplicationContextAware {
      */
     private final Set<String> subscribeServiceSet = new CopyOnWriteArraySet<>();
 
-    public MrpcInjectHandler(ZkClient zkClient, String root) {
+    public MrpcInjectHandler(ZkClient zkClient, String root,MeterRegistry registry) {
         this.zkClient = zkClient;
         this.root = root;
+        this.registry = registry;
     }
 
     /**
@@ -103,7 +110,9 @@ public class MrpcInjectHandler implements ApplicationContextAware {
             if (Objects.nonNull(stat)) {
                 List<String> beanInfos = zk.getChildren(path, watcher);
                 LOGGER.debug("interfaceName : " + beanInfos);
-                servicesMap.put(interfaceName, new HashSet<>(beanInfos));
+                if (beanInfos.size() != 0){
+                    servicesMap.put(interfaceName, new HashSet<>(beanInfos));
+                }
             }
         }
 
@@ -131,8 +140,24 @@ public class MrpcInjectHandler implements ApplicationContextAware {
             LOGGER.debug("发起调用 : " + request);
             MrpcResponse response = client.send(request);
             if (response.getError() != null) {
+                this.registry.counter("mrpc.consumer.counter",
+                        "to_method",method.getName(),
+                        "to_class",clazz.getName(),
+                        "to_server_ip", sv[0] + ":" + sv[1],
+                        "status","failed",
+                        "message", response.getError().getLocalizedMessage()
+                ).increment();
                 throw response.getError();
             }
+
+            this.registry.counter("mrpc.consumer.counter",
+                    "to_method",method.getName(),
+                    "to_class",clazz.getName(),
+                    "to_server_ip", sv[0] + ":" + sv[1],
+                    "status","success",
+                    "message", "success"
+            ).increment();
+
             return response.getResult();
         });
     }

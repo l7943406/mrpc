@@ -5,6 +5,7 @@ import cn.muchen7.client.MrpcInjectHandler;
 import cn.muchen7.server.MrpcServer;
 import cn.muchen7.zk.ZkClient;
 import cn.muchen7.zk.ZkServer;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,6 +21,8 @@ import org.springframework.context.annotation.Configuration;
 public class MrpcAutoConfiguration {
 
     private MrpcProperties properties;
+    @Autowired
+    MeterRegistry registry;
 
     /**
      * 服务消费者的zk客户端
@@ -35,7 +38,7 @@ public class MrpcAutoConfiguration {
     @Bean
     @ConditionalOnBean(ZkClient.class)
     public MrpcInjectHandler rpcInjectHandler(ZkClient client) {
-        return new MrpcInjectHandler(client, properties.getRoot());
+        return new MrpcInjectHandler(client, properties.getRoot(),registry);
     }
 
 

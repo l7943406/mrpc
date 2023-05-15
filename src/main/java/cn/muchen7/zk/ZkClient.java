@@ -1,6 +1,8 @@
 package cn.muchen7.zk;
 
 import cn.muchen7.utils.MrpcException;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -32,13 +34,10 @@ public class ZkClient extends ZkInit {
     private void init(String zkServer, int timeout, String root) {
         try {
             zk = super.create(zkServer, timeout);
-
-            // 查看服务器根节点是否存在
             Stat stat = zk.exists(root, false);
-
             if (stat == null) {
-                // 失败
-                throw new MrpcException("RPC服务根节点不存在！");
+                // 创建根节点
+                zk.create(root, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
         } catch (Exception e) {
             LOGGER.error("初始化ZK服务异常！", e);
