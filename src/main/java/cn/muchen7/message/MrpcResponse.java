@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class MrpcResponse implements Serializable {
     private static final long serialVersionUID = 5286256552793952140L;
 
+    private String serverInfo;
+
     /**
      * 错误
      */
@@ -34,5 +36,13 @@ public class MrpcResponse implements Serializable {
 
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public String getServerInfo() {
+        return serverInfo;
+    }
+
+    public void setServerInfo(String serverInfo) {
+        this.serverInfo = serverInfo;
     }
 }

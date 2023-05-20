@@ -1,9 +1,7 @@
 package cn.muchen7.loadbalance;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author muchen

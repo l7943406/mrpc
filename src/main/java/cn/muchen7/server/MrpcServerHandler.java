@@ -1,5 +1,6 @@
 package cn.muchen7.server;
 
+import cn.muchen7.config.MrpcProperties;
 import cn.muchen7.message.MrpcRequest;
 import cn.muchen7.message.MrpcResponse;
 import cn.muchen7.utils.SpringUtil;
@@ -64,8 +65,9 @@ public class MrpcServerHandler extends SimpleChannelInboundHandler<MrpcRequest> 
             ).increment();
             response.setError(t);
         }
+        response.setServerInfo(SpringUtil.getBean(MrpcProperties.class).getServerIp() + ":" + SpringUtil.getBean(MrpcProperties.class).getServerPort());
         LOGGER.debug("处理request消息 完成 返回消息 : " + response);
-        //返回response
+        // 返回response
         // 写入 out，由RpcEncoder进行下一步编码处理，后发送到channel中给客户端
         ctx.writeAndFlush(response)
                 .addListener(ChannelFutureListener.CLOSE);
