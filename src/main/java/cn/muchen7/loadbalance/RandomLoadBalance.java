@@ -7,9 +7,9 @@ import java.util.List;
  * @author muchen
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
+    private static final SecureRandom random = new SecureRandom();
     @Override
     protected String doSelect(List<String> serviceAddresses) {
-        SecureRandom random = new SecureRandom();
-        return serviceAddresses.get(random.nextInt(serviceAddresses.size()));
+        return serviceAddresses.get(RandomLoadBalance.random.nextInt(serviceAddresses.size()));
     }
 }

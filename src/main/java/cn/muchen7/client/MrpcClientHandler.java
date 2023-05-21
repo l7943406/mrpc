@@ -22,6 +22,8 @@ import java.util.concurrent.CountDownLatch;
 public class MrpcClientHandler extends SimpleChannelInboundHandler<MrpcResponse> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MrpcClientHandler.class);
 
+    private static final EventLoopGroup group = new NioEventLoopGroup();
+
     /**
      * 服务对象地址
      */
@@ -54,10 +56,9 @@ public class MrpcClientHandler extends SimpleChannelInboundHandler<MrpcResponse>
      */
     public MrpcResponse send(MrpcRequest request) {
         LOGGER.debug("发送请求 : " + request);
-        EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group).channel(NioSocketChannel.class);
+            bootstrap.group(MrpcClientHandler.group).channel(NioSocketChannel.class);
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 
                 @Override
@@ -93,8 +94,6 @@ public class MrpcClientHandler extends SimpleChannelInboundHandler<MrpcResponse>
         } catch (Exception e) {
             e.printStackTrace();
             throw new MrpcException("服务调用出现异常");
-        } finally {
-            group.shutdownGracefully();
         }
     }
 

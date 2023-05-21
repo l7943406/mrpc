@@ -36,7 +36,7 @@ public class MessageEncoder extends MessageToByteEncoder<Object> {
         byte[] zipData = GzipUtil.compress(bytes);
         MessageEncoder.compressibility.set(zipData.length * 1.0/bytes.length);
         registry.gauge("mrpc.gzip.compressibility", MessageEncoder.compressibility);
-        LOGGER.debug(System.out.format("该次请求压缩前大小 : %d , 压缩后大小 : %d , 压缩率 : %f \n" ,bytes.length, zipData.length,zipData.length * 1.0/bytes.length).toString());
+        LOGGER.debug(String.format("该次请求压缩前大小 : %d , 压缩后大小 : %d , 压缩率 : %f \n" ,bytes.length, zipData.length,zipData.length * 1.0/bytes.length).toString());
         return zipData;
     }
 }
