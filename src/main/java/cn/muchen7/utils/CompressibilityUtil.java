@@ -32,8 +32,9 @@ public class CompressibilityUtil extends Number {
         if (this.dataSizeAfterCompress <= 0 || this.originalDataSize <= 0){
             return this.compressibility;
         }
-
         compressibility = this.dataSizeAfterCompress / this.originalDataSize;
+        this.dataSizeAfterCompress = 0;
+        this.originalDataSize = 0;
         return compressibility;
     }
 }
